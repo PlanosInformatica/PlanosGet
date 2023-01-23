@@ -1,0 +1,21 @@
+  Installed Packages
+  installed.csv
+    PackageName;architecture;os;package-version
+  Package Spec
+  Zip +-- PreInstall.ps1
+      |
+      +-- PostInstall.ps1
+      |
+      +-- pkgutils/
+      |       |
+      |       +-- (package install utilities)
+      |
+      +-- pkgfiles/
+              |
+              +-- (package files)
+
+  Repository spec
+  packageindex.csv:
+  PackageName;architecture;os;package-version;hash;Desc;Deps
+  File structure
+  arch/os/PackageName-package-version.zip

@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+  <Transactions>
+    <Transaction>2023/01/23 08:24:45.179,=C:\Users\Rodrigo\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2023/01/23 08:34:30.054,=C:\Users\Rodrigo\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
+    <Transaction>2023/01/23 08:35:51.655,C:\Users\Rodrigo\Documents\GitHub\PlanosGet\client-gui\UFrmMain.pas=C:\Users\Rodrigo\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2023/01/23 08:35:51.655,C:\Users\Rodrigo\Documents\GitHub\PlanosGet\client-gui\UFrmMain.dfm=C:\Users\Rodrigo\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2023/01/23 08:36:10.468,C:\Users\Rodrigo\Documents\GitHub\PlanosGet\client-gui\pgetgui.dproj=C:\Users\Rodrigo\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>2023/01/23 08:38:46.503,=C:\Users\Rodrigo\Documents\GitHub\PlanosGet\client-gui\Unit1.pas</Transaction>
+    <Transaction>2023/01/23 08:39:24.036,=C:\Users\Rodrigo\Documents\GitHub\PlanosGet\client-gui\Unit1.pas</Transaction>
+    <Transaction>2023/01/23 08:39:36.758,C:\Users\Rodrigo\Documents\GitHub\PlanosGet\comum\UPackageManager.pas=C:\Users\Rodrigo\Documents\GitHub\PlanosGet\client-gui\Unit1.pas</Transaction>
+  </Transactions>
+</BorlandProject>
