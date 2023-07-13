@@ -66,6 +66,7 @@ type
     JvComputerInfoEx1: TJvComputerInfoEx;
     function ParsePackageIndex(filename:String):Boolean;
     procedure InstallPackage(packageName:String;Version:String);
+    procedure InstallUninstall(packageName:String;Version:String);
     procedure InstallUpdates;
   private
     { Private declarations }
@@ -141,16 +142,12 @@ begin
     Package := TZipFile.Create;
     Package.Open(ExtractFilePath(Application.ExeName)+
       '\cache\'+ PackageName+'-'+version+'.zip',zmRead);
-    Package.ExtractAll(GetEnvironmentVariable('TEMP'));
+    Package.Extract(GetEnvironmentVariable('TEMP'));
     ShellExecute(Self.Handle,'open',PWideChar(GetEnvironmentVariable('TEMP')+'\preinstall.ps1'),'',PWideChar(GetEnvironmentVariable('TEMP')),SW_HIDE);
   except on E:Exception do
     begin
       MessageBox(Self.Handle,PWideChar(E.Message),'Erro',MB_OK+MB_APPLMODAL+
         MB_ICONINFORMATION);
-      if Assigned(PackageStream) then
-        FreeAndNil(PackageStream);
-      if Assigned(Package) then
-        FreeAndNil(Package);
     end;
   end;
 

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
-  <Transactions>
-    <Transaction>2023/01/23 08:24:03.711,C:\Users\Rodrigo\Documents\GitHub\PlanosGet\client-cli\pgetcli.dproj=C:\Users\Rodrigo\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+	<Transactions>
+    <Transaction>2023/01/23 08:24:03.000.711,C:\Users\Rodrigo\Documents\Embarcadero\Studio\Projects\Project1.dproj=C:\Users\Rodrigo\Documents\GitHub\PlanosGet\client-cli\pgetcli.dproj</Transaction>
   </Transactions>
 </BorlandProject>

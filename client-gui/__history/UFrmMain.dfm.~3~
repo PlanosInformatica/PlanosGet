@@ -1,4 +1,4 @@
-object frmMain: TfrmMain
+object Form1: TForm1
   Left = 0
   Top = 0
   Caption = 'Planos Inform'#225'tica - Gerenciador de pacotes'
@@ -23,6 +23,7 @@ object frmMain: TfrmMain
         Text = 'Parado'
         Width = 50
       end>
+    ExplicitTop = 281
   end
   object ToolBar1: TToolBar
     Left = 0
@@ -87,6 +88,7 @@ object frmMain: TfrmMain
     TabOrder = 2
     object TabSheet1: TTabSheet
       Caption = 'Buscar pacote'
+      ExplicitHeight = 184
       object edtBusca: TButtonedEdit
         Left = 0
         Top = 0
@@ -97,6 +99,9 @@ object frmMain: TfrmMain
         RightButton.ImageIndex = 0
         RightButton.Visible = True
         TabOrder = 0
+        ExplicitLeft = 184
+        ExplicitTop = 48
+        ExplicitWidth = 121
       end
       object lvwBuscar: TListView
         Left = 0
@@ -106,11 +111,16 @@ object frmMain: TfrmMain
         Align = alClient
         Columns = <>
         TabOrder = 1
+        ExplicitLeft = 130
+        ExplicitTop = 47
+        ExplicitWidth = 250
+        ExplicitHeight = 150
       end
     end
     object TabSheet2: TTabSheet
       Caption = 'Atualiza'#231#245'es'
       ImageIndex = 1
+      ExplicitHeight = 184
       object Panel1: TPanel
         Left = 0
         Top = 168
@@ -136,16 +146,20 @@ object frmMain: TfrmMain
         Align = alClient
         Columns = <>
         TabOrder = 1
+        ExplicitLeft = 176
+        ExplicitTop = 48
+        ExplicitWidth = 250
+        ExplicitHeight = 150
       end
     end
   end
   object ilToolbar24: TImageList
     Height = 24
     Width = 24
-    Left = 424
-    Top = 144
+    Left = 416
+    Top = 152
     Bitmap = {
-      494C0101040008001C0018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010104000800140018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -750,7 +764,7 @@ object frmMain: TfrmMain
     Left = 500
     Top = 156
     Bitmap = {
-      494C0101010008001C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010101000800140010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -888,69 +902,5 @@ object frmMain: TfrmMain
       000F000000000000000F000000000000801F000000000000801F000000000000
       C03F000000000000F0FF00000000000000000000000000000000000000000000
       000000000000}
-  end
-  object IdHTTP1: TIdHTTP
-    IOHandler = IdSSLIOHandlerSocketOpenSSL1
-    AllowCookies = True
-    ProxyParams.BasicAuthentication = False
-    ProxyParams.ProxyPort = 0
-    Request.ContentLength = -1
-    Request.ContentRangeEnd = -1
-    Request.ContentRangeStart = -1
-    Request.ContentRangeInstanceLength = -1
-    Request.Accept = 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
-    Request.BasicAuthentication = False
-    Request.UserAgent = 'Mozilla/3.0 (compatible; Indy Library)'
-    Request.Ranges.Units = 'bytes'
-    Request.Ranges = <>
-    HTTPOptions = [hoForceEncodeParams]
-    Left = 404
-    Top = 212
-  end
-  object IdSSLIOHandlerSocketOpenSSL1: TIdSSLIOHandlerSocketOpenSSL
-    MaxLineAction = maException
-    Port = 0
-    DefaultPort = 0
-    SSLOptions.Mode = sslmUnassigned
-    SSLOptions.VerifyMode = []
-    SSLOptions.VerifyDepth = 0
-    Left = 508
-    Top = 212
-  end
-  object cdsPackageIndex: TClientDataSet
-    Aggregates = <>
-    Params = <>
-    Left = 340
-    Top = 212
-    object cdsPackageIndexName: TStringField
-      FieldName = 'Name'
-      Size = 255
-    end
-    object cdsPackageIndexVersion: TStringField
-      FieldName = 'Version'
-      Size = 100
-    end
-    object cdsPackageIndexOS: TStringField
-      FieldName = 'OS'
-    end
-    object cdsPackageIndexArch: TStringField
-      FieldName = 'Arch'
-    end
-    object cdsPackageIndexDesc: TStringField
-      FieldName = 'Desc'
-      Size = 1024
-    end
-    object cdsPackageIndexDeps: TStringField
-      FieldName = 'Deps'
-      Size = 255
-    end
-    object cdsPackageIndexhash: TStringField
-      FieldName = 'hash'
-      Size = 32
-    end
-  end
-  object JvComputerInfoEx1: TJvComputerInfoEx
-    Left = 332
-    Top = 148
   end
 end

@@ -2,7 +2,7 @@ program pgetgui;
 
 uses
   Vcl.Forms,
-  UFrmMain in 'UFrmMain.pas' {frmMain},
+  UFrmMain in 'UFrmMain.pas' {Form1},
   UPackageManager in '..\comum\UPackageManager.pas';
 
 {$R *.res}
@@ -10,6 +10,6 @@ uses
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
-  Application.CreateForm(TfrmMain, frmMain);
+  Application.CreateForm(TForm1, Form1);
   Application.Run;
 end.

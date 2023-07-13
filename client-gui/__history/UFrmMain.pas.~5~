@@ -1,0 +1,95 @@
+unit UFrmMain;
+{
+  Installed Packages
+  installed.csv
+    PackageName;architecture;os;package-version
+  Package Spec
+  Zip +-- PreInstall.ps1
+      |
+      +-- PostInstall.ps1
+      |
+      +-- pkgutils/
+      |       |
+      |       +-- (package install utilities)
+      |
+      +-- pkgfiles/
+              |
+              +-- (package files)
+
+  Repository spec
+  packageindex.csv:
+  PackageName;architecture;os;package-version;hash;Desc;Deps
+  File structure
+  arch/os/PackageName-package-version.zip
+
+}
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, System.ImageList,
+  Vcl.ImgList, Vcl.ToolWin, Vcl.StdCtrls, Vcl.Buttons, Vcl.ExtCtrls, Data.DB,
+  Datasnap.DBClient, IdIOHandler, IdIOHandlerSocket, IdIOHandlerStack, IdSSL,
+  IdSSLOpenSSL, IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient,
+  IdHTTP;
+
+type
+  TfrmMain = class(TForm)
+    StatusBar1: TStatusBar;
+    ToolBar1: TToolBar;
+    PageControl1: TPageControl;
+    btnAtualizaIdx: TToolButton;
+    ToolButton2: TToolButton;
+    btnInstalarPacote: TToolButton;
+    btnDesinstalarPacote: TToolButton;
+    ToolButton5: TToolButton;
+    btnSair: TToolButton;
+    ilToolbar24: TImageList;
+    TabSheet1: TTabSheet;
+    TabSheet2: TTabSheet;
+    edtBusca: TButtonedEdit;
+    il16: TImageList;
+    lvwBuscar: TListView;
+    Panel1: TPanel;
+    btnAtualizaPkg: TBitBtn;
+    ListView1: TListView;
+    IdHTTP1: TIdHTTP;
+    IdSSLIOHandlerSocketOpenSSL1: TIdSSLIOHandlerSocketOpenSSL;
+    ClientDataSet1: TClientDataSet;
+    ClientDataSet1Name: TStringField;
+    ClientDataSet1Version: TStringField;
+    ClientDataSet1OS: TStringField;
+    ClientDataSet1Arch: TStringField;
+    ClientDataSet1url: TStringField;
+    procedure ParsePackageIndex(filename:String);
+    procedure InstallPackage(packageName:String;Version:String);
+    procedure InstallUninstall(packageName:String;Version:String);
+    procedure InstallUpdates;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmMain: TfrmMain;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmMain.ParsePackageIndex(filename: string);
+var
+  SL : TStringList;
+begin
+  try
+
+  except on E:Exception do
+    begin
+
+    end;
+  end;
+end;
+
+
+end.
