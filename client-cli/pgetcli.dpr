@@ -13,7 +13,8 @@ uses
   Registry,
   JclSecurity,
   StrUtils,
-  System.SysUtils;
+  System.SysUtils,
+  UPackageManager in '..\..\Comum\UPackageManager.pas';
 
 {
   Installed Packages
@@ -87,11 +88,111 @@ begin
   end;
 end;
 
+var
+  PackageManager : TPackageManager;
+  PackageList : TStringList;
+  PackageListString : String;
+  I : Integer;
 begin
   try
     { TODO -oUser -cConsole Main : Insert code here }
+    PackageManager := TPackageManager.Create;
+    if (ParamCount < 2) then
+      begin
+        WriteLn('Modo de uso: '+ExtractFileName(ParamStr(0))+' operação <pacote>');
+        WriteLn('Exemplo: '+ExtractFileName(ParamStr(0))+' install mgr');
+        WriteLn('Operações: '+#13+#10+
+          'install: Instala o(s) pacote(s) especificado(s)'+#13+#10+
+          'update: Atualiza o indice de pacotes'+#13+#10+
+          'search: Busca um pacote pelo nome'+#13+#10+
+          'list: Lista todos os pacotes disponiveis'+#13+#10+
+          'installed: Lista todos os pacotes instalados'+#13+#10+
+          'upgrade: Atualiza todos os pacotes instalados'+#13+#10+
+          'uninstall: Desinstala pacote específicado');
+        Exit
+      end;
+    if MatchStr(lowercase(ParamStr(1)) , ['ajuda','h','help','-h','-help','--help','-?'
+      ,'/?']) then
+      begin
+        WriteLn('Modo de uso: '+ExtractFileName(ParamStr(0))+' operação <pacote>');
+        WriteLn('Exemplo: '+ExtractFileName(ParamStr(0))+' install mgr');
+        WriteLn('Operações: '+#13+#10+
+          'install: Instala o(s) pacote(s) especificado(s)'+#13+#10+
+          'update: Atualiza o indice de pacotes'+#13+#10+
+          'search: Busca um pacote pelo nome'+#13+#10+
+          'list: Lista todos os pacotes disponiveis'+#13+#10+
+          'installed: Lista todos os pacotes instalados'+#13+#10+
+          'upgrade: Atualiza todos os pacotes instalados'+#13+#10+
+          'uninstall: Desinstala pacote específicado');
+        Exit;
+      end;
+    PackageList := TStringList.Create;
+    if ParamCount >= 2 then
+      begin
+        for I := 2 to ParamCount-2 do
+          begin
+            PackageList.Add(lowercase(ParamStr(i)));
+            PackageListString := PackageListString + lowercase(ParamStr(i)) +' '
+          end;
+      end;
+    case IndexStr(lowercase(ParamStr(1)),['install','update',
+      'upgrade','uninstall', 'list','installed', 'search']) of
+      0: begin
+        if PackageList.Count = 0  then
+          begin
+            WriteLn('Nenhum pacote especificado');
+            PackageList.Destroy;
+            Exit;
+          end;
+        WriteLn('Os seguintes pacotes serão INSTALADOS:'+PackageListString);
+        for I := 0 to PackageList.Count -1 do
+          begin
+            WriteLn('Instalando pacote'+PackageList.Strings[i]);
+            PackageManager.Install(PackageList.Strings[i]);
+          end;
+      end;
+      1: begin
+        WriteLn('Atualizando lista de pacotes');
+        PackageManager.Update;
+      end;
+      2: begin
+        WriteLn('Atualizando todos os pacotes');
+        PackageManager.Upgrade;
+      end;
+      3: begin
+        if PackageList.Count = 0  then
+          begin
+            WriteLn('Nenhum pacote especificado');
+            PackageList.Destroy;
+            Exit;
+          end;
+        WriteLn('Os seguintes pacotes serão REMOVIDOS:'+PackageListString);
+        for I := 0 to PackageList.Count -1 do
+          begin
+            WriteLn('Desinstalando pacote'+PackageList.Strings[i]);
+            PackageManager.Uninstall(PackageList.Strings[i]);
+          end;
+      end;
+      4: begin
+        WriteLn(PackageManager.PackageList);
+      end;
+      5:begin
+        WriteLn(PackageManager.InstalledList);
+      end;
+      6: begin
+        if ParamCount >= 2 then
+          WriteLn(PackageManager.PackageSearch(ParamStr(2)))
+        else
+          WriteLn('Especifique o nome do pacote a ser pesquisado');
+      end;
+    end;
+
   except
     on E: Exception do
-      Writeln(E.ClassName, ': ', E.Message);
+      begin
+        Writeln(E.ClassName, ': ', E.Message);
+        if Assigned(PackageList) then
+          PackageList.Destroy;
+      end;
   end;
 end.
