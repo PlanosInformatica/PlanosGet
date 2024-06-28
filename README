@@ -13,6 +13,8 @@
       +-- pkgfiles/
               |
               +-- (package files)
+      |
+      +-- Uninstall.ps1
 
   Repository spec
   packageindex.csv:
