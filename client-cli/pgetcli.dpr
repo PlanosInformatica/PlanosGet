@@ -14,7 +14,7 @@ uses
   JclSecurity,
   StrUtils,
   System.SysUtils,
-  UPackageManager in '..\..\Comum\UPackageManager.pas';
+  UPackageManager in '..\Comum\UPackageManager.pas';
 
 {
   Installed Packages
