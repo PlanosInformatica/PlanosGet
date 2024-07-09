@@ -30,10 +30,8 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
   System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, System.ImageList,
-  Vcl.ImgList, Vcl.ToolWin, Vcl.StdCtrls, Vcl.Buttons, Vcl.ExtCtrls, Data.DB,
-  Datasnap.DBClient, IdIOHandler, IdIOHandlerSocket, IdIOHandlerStack, IdSSL,
-  IdSSLOpenSSL, IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient,
-  IdHTTP, Zip, JvComponentBase, JvComputerInfoEx, ShellApi;
+  Vcl.ImgList, Vcl.ToolWin, Vcl.StdCtrls, Vcl.Buttons, Vcl.ExtCtrls, IOUtils,
+  UPackageManager;
 
 type
   TfrmMain = class(TForm)
@@ -51,115 +49,114 @@ type
     TabSheet2: TTabSheet;
     edtBusca: TButtonedEdit;
     il16: TImageList;
-    lvwBuscar: TListView;
+    lvwPacotes: TListView;
     Panel1: TPanel;
     btnAtualizaPkg: TBitBtn;
-    ListView1: TListView;
-    IdHTTP1: TIdHTTP;
-    IdSSLIOHandlerSocketOpenSSL1: TIdSSLIOHandlerSocketOpenSSL;
-    cdsPackageIndex: TClientDataSet;
-    cdsPackageIndexName: TStringField;
-    cdsPackageIndexVersion: TStringField;
-    cdsPackageIndexOS: TStringField;
-    cdsPackageIndexArch: TStringField;
-    cdsPackageIndexDesc: TStringField;
-    cdsPackageIndexDeps: TStringField;
-    cdsPackageIndexhash: TStringField;
-    JvComputerInfoEx1: TJvComputerInfoEx;
-    function ParsePackageIndex(filename: String): Boolean;
-    procedure InstallPackage(packageName: String; Version: String);
-    procedure InstallUpdates;
+    lvwAtualizacoes: TListView;
+    procedure FormCreate(Sender: TObject);
+    procedure btnAtualizaIdxClick(Sender: TObject);
+    procedure CarregaAtualiza;
+    procedure CarregaPacotes;
   private
     { Private declarations }
   public
     { Public declarations }
-    BaseURL: String = 'https://www.planosinformatica.com.br/repo';
+    PackageManager : TPackageManager;
+
   end;
 
 var
   frmMain: TfrmMain;
 
+const
+  BaseURL: String = 'https://www.planosinformatica.com.br/repo';
 implementation
+
+uses UDlgWait;
 
 {$R *.dfm}
 
-function TfrmMain.ParsePackageIndex(filename: string): Boolean;
+
+procedure TfrmMain.btnAtualizaIdxClick(Sender: TObject);
 var
-  SL: TStringList;
-  tmp, packageName, architecture, os, packageversion, hash, Desc, Deps: String;
-  I: Integer;
+  Output : String;
 begin
-  try
-    Result := False;
-    SL := TStringList.Create;
-    if FileExists(filename) then
-    begin
-      SL.LoadFromFile(filename);
-      for I := 0 to SL.Count - 1 do
-      begin
-        tmp := SL.Strings[I];
-        packageName := Copy(tmp, 1, Pos(';', tmp) - 1);
-        Delete(tmp, 1, Pos(';', tmp));
-        architecture := Copy(tmp, 1, Pos(';', tmp) - 1);
-        Delete(tmp, 1, Pos(';', tmp));
-        os := Copy(tmp, 1, Pos(';', tmp) - 1);
-        Delete(tmp, 1, Pos(';', tmp));
-        packageversion := Copy(tmp, 1, Pos(';', tmp) - 1);
-        Delete(tmp, 1, Pos(';', tmp));
-        hash := Copy(tmp, 1, Pos(';', tmp) - 1);
-        Delete(tmp, 1, Pos(';', tmp));
-        Desc := Copy(tmp, 1, Pos(';', tmp) - 1);
-        Delete(tmp, 1, Pos(';', tmp));
-        Deps := tmp;
-        cdsPackageIndex.AppendRecord([packageName, packageversion, os,
-          architecture, Desc, Deps, hash]);
-      end;
-      Result := True;
-    end;
-    SL.Destroy;
-  except
-    on E: Exception do
-    begin
-      MessageBox(Self.Handle, PWideChar(E.Message), 'Erro',
-        MB_OK + MB_APPLMODAL + MB_ICONINFORMATION);
-      if Assigned(SL) then
-        FreeAndNil(SL);
-    end;
-  end;
+  dlgWait.lblTask.Caption := 'Verificando atualizações';
+  dlgWait.Show;
+  Application.ProcessMessages;
+  if PackageManager.Update(Output) then
+    MessageBox(Self.Handle,PWideChar(Output),PWideChar(Self.Caption),MB_OK+MB_ICONINFORMATION+MB_APPLMODAL);
+  CarregaAtualiza;
+  CarregaPacotes;
+  dlgWait.Close;
 end;
 
-procedure TfrmMain.InstallPackage(packageName: String; Version: String);
-var
-  Package: TZipFile;
-  PackageStream: TFileStream;
+procedure TfrmMain.FormCreate(Sender: TObject);
 begin
-  try
-    PackageStream := TFileStream.Create(ExtractFilePath(Application.ExeName) +
-      '\cache\' + packageName + '-' + Version + '.zip', fmOpenWrite);
-    IdHTTP1.Get(BaseURL + '/x86-32/windows/' + packageName + '-' + Version +
-      '.zip', PackageStream);
-    if PackageStream.Size = 0 then
-      raise Exception.Create('Arquivo baixado com tamanho zero.');
-    FreeAndNil(PackageStream);
-    Package := TZipFile.Create;
-    Package.Open(ExtractFilePath(Application.ExeName) + '\cache\' + packageName
-      + '-' + Version + '.zip', zmRead);
-    Package.ExtractAll(GetEnvironmentVariable('TEMP'));
-    ShellExecute(Self.Handle, 'open',
-      PWideChar(GetEnvironmentVariable('TEMP') + '\preinstall.ps1'), '',
-      PWideChar(GetEnvironmentVariable('TEMP')), SW_HIDE);
-  except
-    on E: Exception do
-    begin
-      MessageBox(Self.Handle, PWideChar(E.Message), 'Erro',
-        MB_OK + MB_APPLMODAL + MB_ICONINFORMATION);
-      if Assigned(PackageStream) then
-        FreeAndNil(PackageStream);
-      if Assigned(Package) then
-        FreeAndNil(Package);
-    end;
-  end;
+  PackageManager := TPackageManager.Create(
+    ExtractFilePath(Application.ExeName),
+    ExtractFilePath(Application.ExeName),TPath.GetTempPath,BaseURL);
+  CarregaPacotes;
+  CarregaAtualiza;
+end;
 
+procedure TfrmMain.CarregaAtualiza;
+var
+  L : TListItem;
+  I: Integer;
+  InstalledName,InstalledVersion, tmp : String;
+  Metadata : PPackageMetadata;
+begin
+  lvwAtualizacoes.Clear;
+  for I := 0 to PackageManager.InstalledPackages.Count -1 do
+    begin
+      tmp := PackageManager.InstalledPackages.Strings[I];
+      InstalledName := Copy(tmp,1,Pos(';',tmp)-1);
+      Delete(tmp,1,Pos(';',tmp));
+      Delete(tmp,1,Pos(';',tmp));
+      Delete(tmp,1,Pos(';',tmp));
+      InstalledVersion := Copy(tmp,1,Pos(';',tmp)-1);
+      Metadata := PackageManager.SearchPackage(InstalledName);
+      if Assigned(Metadata) then
+        begin
+          if Metadata.VersionString <> InstalledVersion then
+            begin
+              L := lvwAtualizacoes.Items.Add;
+              L.Caption := Metadata.Name;
+              L.SubItems.Add(Metadata.Description);
+              L.SubItems.Add(InstalledVersion);
+              L.SubItems.Add(Metadata.VersionString);
+            end;
+        end;
+      Dispose(Metadata);
+      Metadata := nil;
+    end;
+end;
+
+procedure TfrmMain.CarregaPacotes;
+var
+  L : TListItem;
+  I : Integer;
+  Metadata : PPackageMetadata;
+  tmp : String;
+begin
+  lvwPacotes.Clear;
+  for I := 0 to PackageManager.CurrentPackageIndex.Count -1 do
+    begin
+      tmp := Copy(PackageManager.CurrentPackageIndex.Strings[I],1,Pos(';',PackageManager.CurrentPackageIndex.Strings[I])-1);
+      Metadata := PackageManager.SearchPackage(tmp);
+      if Assigned(Metadata) then
+        begin
+          L := lvwPacotes.Items.Add;
+          if PackageManager.IsInstalled(Metadata.Name) then
+            L.Caption := 'Instalado';
+          L.SubItems.Add(Metadata.Name);
+          L.SubItems.Add(Metadata.VersionString);
+          L.SubItems.Add(Metadata.Description);
+          Dispose(Metadata);
+          Metadata := nil;
+        end;
+    end;
 end;
 
 end.

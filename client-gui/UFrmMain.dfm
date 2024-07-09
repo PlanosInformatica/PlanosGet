@@ -11,6 +11,8 @@ object frmMain: TfrmMain
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  Position = poScreenCenter
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object StatusBar1: TStatusBar
@@ -40,6 +42,7 @@ object frmMain: TfrmMain
       Top = 0
       Caption = 'Atualizar '#205'ndices'
       ImageIndex = 0
+      OnClick = btnAtualizaIdxClick
     end
     object ToolButton2: TToolButton
       Left = 96
@@ -85,40 +88,9 @@ object frmMain: TfrmMain
     Align = alClient
     Style = tsFlatButtons
     TabOrder = 2
-    object TabSheet1: TTabSheet
-      Caption = 'Buscar pacote'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
-      object edtBusca: TButtonedEdit
-        Left = 0
-        Top = 0
-        Width = 627
-        Height = 21
-        Align = alTop
-        Images = il16
-        RightButton.ImageIndex = 0
-        RightButton.Visible = True
-        TabOrder = 0
-      end
-      object lvwBuscar: TListView
-        Left = 0
-        Top = 21
-        Width = 627
-        Height = 179
-        Align = alClient
-        Columns = <>
-        TabOrder = 1
-      end
-    end
     object TabSheet2: TTabSheet
       Caption = 'Atualiza'#231#245'es'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel1: TPanel
         Left = 0
         Top = 168
@@ -136,14 +108,77 @@ object frmMain: TfrmMain
           TabOrder = 0
         end
       end
-      object ListView1: TListView
+      object lvwAtualizacoes: TListView
         Left = 0
         Top = 0
         Width = 627
         Height = 168
         Align = alClient
-        Columns = <>
+        Columns = <
+          item
+            Caption = 'Pacote'
+            Width = 100
+          end
+          item
+            Caption = 'Descri'#231#227'o'
+            Width = 300
+          end
+          item
+            Caption = 'Ver. Instalada'
+            Width = 100
+          end
+          item
+            Caption = 'Ver Atualiza'#231#227'o'
+            Width = 100
+          end>
+        GridLines = True
+        ReadOnly = True
+        RowSelect = True
         TabOrder = 1
+        ViewStyle = vsReport
+      end
+    end
+    object TabSheet1: TTabSheet
+      Caption = 'Buscar pacote'
+      object edtBusca: TButtonedEdit
+        Left = 0
+        Top = 0
+        Width = 627
+        Height = 21
+        Align = alTop
+        Images = il16
+        RightButton.ImageIndex = 0
+        RightButton.Visible = True
+        TabOrder = 0
+      end
+      object lvwPacotes: TListView
+        Left = 0
+        Top = 21
+        Width = 627
+        Height = 179
+        Align = alClient
+        Columns = <
+          item
+            Caption = 'Instalado'
+            Width = 60
+          end
+          item
+            Caption = 'Pacote'
+            Width = 120
+          end
+          item
+            Caption = 'Vers'#227'o'
+            Width = 70
+          end
+          item
+            Caption = 'Descri'#231#227'o'
+            Width = 300
+          end>
+        GridLines = True
+        ReadOnly = True
+        RowSelect = True
+        TabOrder = 1
+        ViewStyle = vsReport
       end
     end
   end
@@ -153,7 +188,7 @@ object frmMain: TfrmMain
     Left = 424
     Top = 144
     Bitmap = {
-      494C010104000800200018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101040008002C0018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -758,7 +793,7 @@ object frmMain: TfrmMain
     Left = 500
     Top = 156
     Bitmap = {
-      494C010101000800200010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101010008002C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -896,69 +931,5 @@ object frmMain: TfrmMain
       000F000000000000000F000000000000801F000000000000801F000000000000
       C03F000000000000F0FF00000000000000000000000000000000000000000000
       000000000000}
-  end
-  object IdHTTP1: TIdHTTP
-    IOHandler = IdSSLIOHandlerSocketOpenSSL1
-    AllowCookies = True
-    ProxyParams.BasicAuthentication = False
-    ProxyParams.ProxyPort = 0
-    Request.ContentLength = -1
-    Request.ContentRangeEnd = -1
-    Request.ContentRangeStart = -1
-    Request.ContentRangeInstanceLength = -1
-    Request.Accept = 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
-    Request.BasicAuthentication = False
-    Request.UserAgent = 'Mozilla/3.0 (compatible; Indy Library)'
-    Request.Ranges.Units = 'bytes'
-    Request.Ranges = <>
-    HTTPOptions = [hoForceEncodeParams]
-    Left = 404
-    Top = 212
-  end
-  object IdSSLIOHandlerSocketOpenSSL1: TIdSSLIOHandlerSocketOpenSSL
-    MaxLineAction = maException
-    Port = 0
-    DefaultPort = 0
-    SSLOptions.Mode = sslmUnassigned
-    SSLOptions.VerifyMode = []
-    SSLOptions.VerifyDepth = 0
-    Left = 508
-    Top = 212
-  end
-  object cdsPackageIndex: TClientDataSet
-    Aggregates = <>
-    Params = <>
-    Left = 340
-    Top = 212
-    object cdsPackageIndexName: TStringField
-      FieldName = 'Name'
-      Size = 255
-    end
-    object cdsPackageIndexVersion: TStringField
-      FieldName = 'Version'
-      Size = 100
-    end
-    object cdsPackageIndexOS: TStringField
-      FieldName = 'OS'
-    end
-    object cdsPackageIndexArch: TStringField
-      FieldName = 'Arch'
-    end
-    object cdsPackageIndexDesc: TStringField
-      FieldName = 'Desc'
-      Size = 1024
-    end
-    object cdsPackageIndexDeps: TStringField
-      FieldName = 'Deps'
-      Size = 255
-    end
-    object cdsPackageIndexhash: TStringField
-      FieldName = 'hash'
-      Size = 32
-    end
-  end
-  object JvComputerInfoEx1: TJvComputerInfoEx
-    Left = 332
-    Top = 148
   end
 end
