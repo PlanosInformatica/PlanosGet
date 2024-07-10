@@ -1,0 +1,35 @@
+{
+    "pdv":{
+        "desc":"Sistema de ponto de vendas integrado ao Planos Manager.",
+        "deps":"dlls,manager-mysql-db,plconfig"
+    },
+    "manager":{
+        "desc":"Sistema de automação comercial e gerenciamento de empreendimentos.",
+        "deps":"dlls,manager-mysql-db,plconfig"
+    },
+    "dlls":{
+        "desc":"Conjunto de DLLS que os sistemas da Planos informática utilizam.",
+        "deps":""
+    },
+    "satspool":{
+        "desc":"Sistema de compartilhamento do SAT.",
+        "deps":"dlls,manager-mysql-db,plconfig"
+    },
+    "plconfig":{
+        "desc":"Configurador do sistema Planos Manager e seus módulos.",
+        "deps":"dlls,manager-mysql-db"
+    },
+    "pget-cli":{
+        "desc":"Gerenciador de pacotes da Planos Informática,versão de linha de comando.",
+        "deps":"dlls"
+    },
+    "pget-gui":{
+        "desc":"Gerenciador de pacotes da Planos Informática, versão de interface gráfica.",
+        "deps":""
+    },
+    "manager-mysql-db":{
+        "desc":"Banco de dados do sistema Planos Manager.",
+        "deps":""
+    }
+}
+    
