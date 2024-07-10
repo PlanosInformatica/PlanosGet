@@ -57,6 +57,8 @@ type
     procedure btnAtualizaIdxClick(Sender: TObject);
     procedure CarregaAtualiza;
     procedure CarregaPacotes;
+    procedure btnInstalarPacoteClick(Sender: TObject);
+    procedure btnDesinstalarPacoteClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -72,7 +74,7 @@ const
   BaseURL: String = 'https://www.planosinformatica.com.br/repo';
 implementation
 
-uses UDlgWait;
+uses UDlgWait,UDlgInstall;
 
 {$R *.dfm}
 
@@ -98,6 +100,33 @@ begin
     ExtractFilePath(Application.ExeName),TPath.GetTempPath,BaseURL);
   CarregaPacotes;
   CarregaAtualiza;
+end;
+
+procedure TfrmMain.btnDesinstalarPacoteClick(Sender: TObject);
+var
+  PackageName,Output:String;
+begin
+  PackageName := lvwPacotes.ItemFocused.SubItems.Strings[0];
+  if MessageBox(Self.Handle,PWideChar('Você tem certeza que deseja desinstalar '+PackageName),PWideChar(Self.Caption),MB_YESNO+MB_ICONQUESTION+MB_APPLMODAL) = IDNO then
+    Exit;
+  PackageManager.Uninstall(PackageName,Output);
+  MessageBox(Self.Handle,PWideChar('Desinstalação concluída'+#13+Output),PWideChar(Self.Caption),MB_OK+MB_ICONINFORMATION+MB_APPLMODAL);
+end;
+
+procedure TfrmMain.btnInstalarPacoteClick(Sender: TObject);
+var
+  PackageName,Output:String;
+begin
+  PackageName := lvwPacotes.ItemFocused.SubItems.Strings[0];
+  dlgInstall.memLog.Clear;
+  dlgInstall.Show;
+  dlgInstall.memLog.Lines.Add('Instalando pacote '+PackageName);
+  Application.ProcessMessages;
+  PackageManager.Install(PackageName,Output);
+  dlgInstall.memLog.Lines.Add(Output);
+  dlgInstall.memLog.Lines.Add('Processo encerrado, você pode fechar esta janela');
+  dlgInstall.SetFocus;
+  CarregaPacotes;
 end;
 
 procedure TfrmMain.CarregaAtualiza;
