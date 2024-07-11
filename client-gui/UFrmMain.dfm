@@ -13,6 +13,7 @@ object frmMain: TfrmMain
   OldCreateOrder = False
   Position = poScreenCenter
   OnCreate = FormCreate
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object StatusBar1: TStatusBar
@@ -44,20 +45,20 @@ object frmMain: TfrmMain
       ImageIndex = 0
       OnClick = btnAtualizaIdxClick
     end
-    object ToolButton2: TToolButton
+    object btnInstalarPacote: TToolButton
       Left = 96
+      Top = 0
+      Caption = 'Instalar Pacote'
+      ImageIndex = 1
+      OnClick = btnInstalarPacoteClick
+    end
+    object ToolButton2: TToolButton
+      Left = 192
       Top = 0
       Width = 8
       Caption = 'ToolButton2'
       ImageIndex = 1
       Style = tbsSeparator
-    end
-    object btnInstalarPacote: TToolButton
-      Left = 104
-      Top = 0
-      Caption = 'Instalar Pacote'
-      ImageIndex = 1
-      OnClick = btnInstalarPacoteClick
     end
     object btnDesinstalarPacote: TToolButton
       Left = 200
@@ -79,6 +80,7 @@ object frmMain: TfrmMain
       Top = 0
       Caption = 'Sair'
       ImageIndex = 3
+      OnClick = btnSairClick
     end
   end
   object PageControl1: TPageControl
@@ -86,10 +88,12 @@ object frmMain: TfrmMain
     Top = 49
     Width = 635
     Height = 231
-    ActivePage = TabSheet1
+    ActivePage = TabSheet2
     Align = alClient
     Style = tsFlatButtons
     TabOrder = 2
+    OnChange = PageControl1Change
+    ExplicitTop = 43
     object TabSheet2: TTabSheet
       Caption = 'Atualiza'#231#245'es'
       ImageIndex = 1
@@ -108,6 +112,7 @@ object frmMain: TfrmMain
           Height = 25
           Caption = 'Atualizar Pacotes'
           TabOrder = 0
+          OnClick = btnAtualizaPkgClick
         end
       end
       object lvwAtualizacoes: TListView
@@ -181,6 +186,7 @@ object frmMain: TfrmMain
         RowSelect = True
         TabOrder = 1
         ViewStyle = vsReport
+        OnDblClick = lvwPacotesDblClick
       end
     end
   end
@@ -190,7 +196,7 @@ object frmMain: TfrmMain
     Left = 424
     Top = 144
     Bitmap = {
-      494C010104000800300018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010104000800340018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -795,7 +801,7 @@ object frmMain: TfrmMain
     Left = 500
     Top = 156
     Bitmap = {
-      494C010101000800300010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010101000800340010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

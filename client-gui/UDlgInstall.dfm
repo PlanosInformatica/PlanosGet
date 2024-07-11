@@ -11,6 +11,7 @@ object dlgInstall: TdlgInstall
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  Position = poMainFormCenter
   PixelsPerInch = 96
   TextHeight = 13
   object memLog: TMemo
@@ -20,16 +21,14 @@ object dlgInstall: TdlgInstall
     Height = 299
     Align = alClient
     Color = clBlack
-    Font.Charset = OEM_CHARSET
+    Font.Charset = ANSI_CHARSET
     Font.Color = clLime
     Font.Height = -11
-    Font.Name = 'Terminal'
+    Font.Name = 'Consolas'
     Font.Style = [fsBold]
     ParentFont = False
+    ReadOnly = True
+    ScrollBars = ssBoth
     TabOrder = 0
-    ExplicitLeft = 288
-    ExplicitTop = 72
-    ExplicitWidth = 185
-    ExplicitHeight = 89
   end
 end

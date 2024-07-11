@@ -59,6 +59,11 @@ type
     procedure CarregaPacotes;
     procedure btnInstalarPacoteClick(Sender: TObject);
     procedure btnDesinstalarPacoteClick(Sender: TObject);
+    procedure btnSairClick(Sender: TObject);
+    procedure lvwPacotesDblClick(Sender: TObject);
+    procedure btnAtualizaPkgClick(Sender: TObject);
+    procedure PageControl1Change(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
   public
@@ -74,7 +79,7 @@ const
   BaseURL: String = 'https://www.planosinformatica.com.br/repo';
 implementation
 
-uses UDlgWait,UDlgInstall;
+uses UDlgWait,UDlgInstall,UDlgInfo;
 
 {$R *.dfm}
 
@@ -102,6 +107,73 @@ begin
   CarregaAtualiza;
 end;
 
+procedure TfrmMain.FormShow(Sender: TObject);
+begin
+if PageControl1.ActivePageIndex = 1 then
+    begin
+      btnInstalarPacote.Enabled := True;
+      btnDesinstalarPacote.Enabled := True;
+    end
+  else
+    begin
+      btnInstalarPacote.Enabled := False;
+      btnDesinstalarPacote.Enabled := False;
+    end;
+end;
+
+procedure TfrmMain.lvwPacotesDblClick(Sender: TObject);
+var
+  PackageMetadata : PPackageMetadata;
+begin
+  if lvwPacotes.ItemIndex >=0 then
+    begin
+      PackageMetadata := PackageManager.SearchPackage(lvwPacotes.ItemFocused.SubItems[0]);
+      if Assigned(PackageMetadata) then
+        begin
+          dlgInfo.edtPackageName.Text := PackageMetadata.Name;
+          dlgInfo.edtPackageVersion.Text := PackageMetadata.VersionString;
+          dlgInfo.edtPackageDescription.Text := PackageMetadata.Description;
+          dlgInfo.edtPackageHash.Text := PackageMetadata.Hash;
+          dlgInfo.edtPackageDependencies.Text := PackageMetadata.Dependencies;
+          Dispose(PackageMetadata);
+          PackageMetadata := nil;
+          dlgInfo.ShowModal;
+        end;
+    end;
+end;
+
+procedure TfrmMain.PageControl1Change(Sender: TObject);
+begin
+  if PageControl1.ActivePageIndex = 1 then
+    begin
+      btnInstalarPacote.Enabled := True;
+      btnDesinstalarPacote.Enabled := True;
+    end
+  else
+    begin
+      btnInstalarPacote.Enabled := False;
+      btnDesinstalarPacote.Enabled := False;
+    end;
+end;
+
+procedure TfrmMain.btnAtualizaPkgClick(Sender: TObject);
+var
+  Output : String;
+begin
+  if MessageBox(Self.Handle,'Você tem certeza que deseja instalar as atualizações?',PWideChar(Self.Caption),MB_YESNO+MB_ICONQUESTION+MB_APPLMODAL)=IDYES then
+    begin
+      dlgInstall.memLog.Clear;
+      dlgInstall.Show;
+      dlgInstall.memLog.Lines.Add('Atualizando pacotes');
+      PackageManager.Upgrade(Output);
+      dlgInstall.memLog.Lines.Add('Atualização encerrada, você pode fechar esta janela.');
+      dlgInstall.memLog.Lines.Add('Processo encerrado, você pode fechar esta janela.');
+      dlgInstall.SetFocus;
+      CarregaPacotes;
+      CarregaAtualiza;
+    end;
+end;
+
 procedure TfrmMain.btnDesinstalarPacoteClick(Sender: TObject);
 var
   PackageName,Output:String;
@@ -117,6 +189,13 @@ procedure TfrmMain.btnInstalarPacoteClick(Sender: TObject);
 var
   PackageName,Output:String;
 begin
+  if lvwPacotes.ItemIndex = -1 then
+    begin
+      MessageBox(Self.Handle,'Selecione um pacote primeiro',PWideChar(Self.Caption),MB_OK+MB_ICONERROR+MB_APPLMODAL);
+      PageControl1.ActivePageIndex := 1;
+      lvwPacotes.SetFocus;
+      Exit;
+    end;
   PackageName := lvwPacotes.ItemFocused.SubItems.Strings[0];
   dlgInstall.memLog.Clear;
   dlgInstall.Show;
@@ -124,9 +203,14 @@ begin
   Application.ProcessMessages;
   PackageManager.Install(PackageName,Output);
   dlgInstall.memLog.Lines.Add(Output);
-  dlgInstall.memLog.Lines.Add('Processo encerrado, você pode fechar esta janela');
+  dlgInstall.memLog.Lines.Add('Processo encerrado, você pode fechar esta janela.');
   dlgInstall.SetFocus;
   CarregaPacotes;
+end;
+
+procedure TfrmMain.btnSairClick(Sender: TObject);
+begin
+Application.Terminate;
 end;
 
 procedure TfrmMain.CarregaAtualiza;
@@ -144,7 +228,7 @@ begin
       Delete(tmp,1,Pos(';',tmp));
       Delete(tmp,1,Pos(';',tmp));
       Delete(tmp,1,Pos(';',tmp));
-      InstalledVersion := Copy(tmp,1,Pos(';',tmp)-1);
+      InstalledVersion := tmp;
       Metadata := PackageManager.SearchPackage(InstalledName);
       if Assigned(Metadata) then
         begin
@@ -156,9 +240,9 @@ begin
               L.SubItems.Add(InstalledVersion);
               L.SubItems.Add(Metadata.VersionString);
             end;
+          Dispose(Metadata);
+          Metadata := nil;
         end;
-      Dispose(Metadata);
-      Metadata := nil;
     end;
 end;
 

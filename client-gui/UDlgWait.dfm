@@ -2,7 +2,7 @@ object dlgWait: TdlgWait
   Left = 0
   Top = 0
   BorderStyle = bsDialog
-  Caption = 'dlgWait'
+  Caption = 'Trabalhando'
   ClientHeight = 70
   ClientWidth = 217
   Color = clBtnFace
