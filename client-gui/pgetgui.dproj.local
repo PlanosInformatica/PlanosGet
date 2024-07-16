@@ -3,21 +3,21 @@
 	<Transactions>
     <Transaction>2023/01/23 08:24:45.000.179,=C:\Users\Rodrigo\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
     <Transaction>2023/01/23 08:34:30.000.054,=C:\Users\Rodrigo\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
-    <Transaction>2023/01/23 08:35:51.000.655,C:\Users\Rodrigo\Documents\GitHub\PlanosGet\client-gui\UFrmMain.pas=C:\Users\Rodrigo\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
-    <Transaction>2023/01/23 08:35:51.000.655,C:\Users\Rodrigo\Documents\GitHub\PlanosGet\client-gui\UFrmMain.dfm=C:\Users\Rodrigo\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
-    <Transaction>2023/01/23 08:36:10.000.468,C:\Users\Rodrigo\Documents\GitHub\PlanosGet\client-gui\pgetgui.dproj=C:\Users\Rodrigo\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>2023/01/23 08:35:51.000.655,C:\Users\Rodrigo\Documents\Embarcadero\Studio\Projects\Unit1.dfm=C:\Users\Rodrigo\Documents\GitHub\PlanosGet\client-gui\UFrmMain.dfm</Transaction>
+    <Transaction>2023/01/23 08:35:51.000.655,C:\Users\Rodrigo\Documents\Embarcadero\Studio\Projects\Unit1.pas=C:\Users\Rodrigo\Documents\GitHub\PlanosGet\client-gui\UFrmMain.pas</Transaction>
+    <Transaction>2023/01/23 08:36:10.000.468,C:\Users\Rodrigo\Documents\Embarcadero\Studio\Projects\Project1.dproj=C:\Users\Rodrigo\Documents\GitHub\PlanosGet\client-gui\pgetgui.dproj</Transaction>
     <Transaction>2023/01/23 08:38:46.000.503,=C:\Users\Rodrigo\Documents\GitHub\PlanosGet\client-gui\Unit1.pas</Transaction>
     <Transaction>2023/01/23 08:39:24.000.036,=C:\Users\Rodrigo\Documents\GitHub\PlanosGet\client-gui\Unit1.pas</Transaction>
-    <Transaction>2023/01/23 08:39:36.000.758,C:\Users\Rodrigo\Documents\GitHub\PlanosGet\comum\UPackageManager.pas=C:\Users\Rodrigo\Documents\GitHub\PlanosGet\client-gui\Unit1.pas</Transaction>
+    <Transaction>2023/01/23 08:39:36.000.758,C:\Users\Rodrigo\Documents\GitHub\PlanosGet\client-gui\Unit1.pas=C:\Users\Rodrigo\Documents\GitHub\PlanosGet\comum\UPackageManager.pas</Transaction>
     <Transaction>2024/07/08 14:16:50.000.914,=D:\Projetos\Comum\UPackageManager.pas</Transaction>
     <Transaction>2024/07/09 08:43:45.000.200,=D:\Projetos\PlanosGet\client-gui\Unit1.pas</Transaction>
-    <Transaction>2024/07/09 08:47:04.000.535,D:\Projetos\PlanosGet\client-gui\UDlgWait.pas=D:\Projetos\PlanosGet\client-gui\Unit1.pas</Transaction>
-    <Transaction>2024/07/09 08:47:04.000.535,D:\Projetos\PlanosGet\client-gui\UDlgWait.dfm=D:\Projetos\PlanosGet\client-gui\Unit1.dfm</Transaction>
+    <Transaction>2024/07/09 08:47:04.000.535,D:\Projetos\PlanosGet\client-gui\Unit1.pas=D:\Projetos\PlanosGet\client-gui\UDlgWait.pas</Transaction>
+    <Transaction>2024/07/09 08:47:04.000.535,D:\Projetos\PlanosGet\client-gui\Unit1.dfm=D:\Projetos\PlanosGet\client-gui\UDlgWait.dfm</Transaction>
     <Transaction>2024/07/10 07:02:22.000.117,=D:\Projetos\PlanosGet\client-gui\Unit1.pas</Transaction>
-    <Transaction>2024/07/10 07:05:11.000.253,D:\Projetos\PlanosGet\client-gui\Unit1.pas=D:\Projetos\PlanosGet\client-gui\UDlgInstall.pas</Transaction>
-    <Transaction>2024/07/10 07:05:11.000.253,D:\Projetos\PlanosGet\client-gui\Unit1.dfm=D:\Projetos\PlanosGet\client-gui\UDlgInstall.dfm</Transaction>
-    <Transaction>2024/07/11 08:59:26.722,=D:\Projetos\PlanosGet\client-gui\Unit1.pas</Transaction>
-    <Transaction>2024/07/11 09:02:38.435,D:\Projetos\PlanosGet\client-gui\UDlgInfo.pas=D:\Projetos\PlanosGet\client-gui\Unit1.pas</Transaction>
-    <Transaction>2024/07/11 09:02:38.435,D:\Projetos\PlanosGet\client-gui\UDlgInfo.dfm=D:\Projetos\PlanosGet\client-gui\Unit1.dfm</Transaction>
+    <Transaction>2024/07/10 07:05:11.000.253,D:\Projetos\PlanosGet\client-gui\UDlgInstall.pas=D:\Projetos\PlanosGet\client-gui\Unit1.pas</Transaction>
+    <Transaction>2024/07/10 07:05:11.000.253,D:\Projetos\PlanosGet\client-gui\UDlgInstall.dfm=D:\Projetos\PlanosGet\client-gui\Unit1.dfm</Transaction>
+    <Transaction>2024/07/11 08:59:26.000.722,=D:\Projetos\PlanosGet\client-gui\Unit1.pas</Transaction>
+    <Transaction>2024/07/11 09:02:38.000.435,D:\Projetos\PlanosGet\client-gui\Unit1.dfm=D:\Projetos\PlanosGet\client-gui\UDlgInfo.dfm</Transaction>
+    <Transaction>2024/07/11 09:02:38.000.435,D:\Projetos\PlanosGet\client-gui\Unit1.pas=D:\Projetos\PlanosGet\client-gui\UDlgInfo.pas</Transaction>
   </Transactions>
 </BorlandProject>

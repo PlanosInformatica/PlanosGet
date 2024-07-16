@@ -108,12 +108,12 @@ var
   PackageManager: TPackageManager;
   PackageMetaData: PPackageMetadata;
   PackageList: TStringList;
-  PackageListString, CommandOutput: String;
+  PackageListString, CommandOutput,tmp: String;
   I: Integer;
 
 begin
   try
-    { TODO -oUser -cConsole Main : Insert code here }
+    SetColorConsole(clWhite);
     PackageManager := TPackageManager.Create(ExtractFilePath(ParamStr(0)),
       ExtractFilePath(ParamStr(0)), System.IOUtils.TPath.GetTempPath(),
       'https://www.planosinformatica.com.br/repo');
@@ -149,18 +149,12 @@ begin
       Exit;
     end;
     PackageList := TStringList.Create;
-    if ParamCount > 2 then
-    begin
-      for I := 2 to ParamCount - 2 do
+    for I := 2 to ParamCount -1 do
       begin
         PackageList.Add(lowercase(ParamStr(I)));
         PackageListString := PackageListString + lowercase(ParamStr(I)) + ' '
       end;
-    end
-    else
-    begin
-      PackageList.Add(ParamStr(2));
-    end;
+
     case IndexStr(lowercase(ParamStr(1)), ['install', 'update', 'upgrade',
       'uninstall', 'list', 'installed', 'search']) of
       0:
@@ -171,7 +165,9 @@ begin
             PackageList.Destroy;
             Exit;
           end;
+          SetColorConsole(clGreen);
           WriteLn('Os seguintes pacotes serão INSTALADOS:' + PackageListString);
+          SetColorConsole(clWhite);
           for I := 0 to PackageList.Count - 1 do
           begin
             WriteLn('Instalando pacote ' + PackageList.Strings[I]);
@@ -195,32 +191,68 @@ begin
         begin
           if PackageList.Count = 0 then
           begin
+            SetColorConsole(clYellow);
             WriteLn('Nenhum pacote especificado');
+            SetColorConsole(clWhite);
             PackageList.Destroy;
             Exit;
           end;
+          SetColorConsole(clRed);
           WriteLn('Os seguintes pacotes serão REMOVIDOS:' + PackageListString);
+          SetColorConsole(clYellow);
           for I := 0 to PackageList.Count - 1 do
           begin
             WriteLn('Desinstalando pacote ' + PackageList.Strings[I]);
             PackageManager.Uninstall(PackageList.Strings[I], CommandOutput);
             WriteLn(CommandOutput);
           end;
+          SetColorConsole(clWhite);
         end;
       4:
         begin
           for I := 0 to PackageManager.CurrentPackageIndex.Count - 1 do
           begin
-            WriteLn(Copy(PackageManager.CurrentPackageIndex.Strings[I], 1,
-              Pos(';', PackageManager.CurrentPackageIndex.Strings[I]) - 1));
+            tmp := Copy(PackageManager.CurrentPackageIndex.Strings[I], 1,
+              Pos(';', PackageManager.CurrentPackageIndex.Strings[I]) - 1);
+            PackageMetaData := PackageManager.SearchPackage(tmp);
+              if Assigned(PackageMetaData) then
+                begin
+                  SetColorConsole(clGreen);
+                  Write(PackageMetadata.Name);
+                  SetColorConsole(clWhite);
+                  Write('[');
+                  SetColorConsole(clAqua);
+                  Write(PackageMetadata.Arch+'/'+PackageMetadata.OS);
+                  SetColorConsole(clWhite);
+                  Write(']('+PackageMetadata.VersionString+'):'+PackageMetadata.Description);
+                  WriteLn('');
+                  Dispose(PackageMetaData);
+                  PackageMetaData := nil;
+                end;
           end;
         end;
       5:
         begin
           for I := 0 to PackageManager.InstalledPackages.Count - 1 do
           begin
-            WriteLn(Copy(PackageManager.InstalledPackages.Strings[I], 1,
-              Pos(';', PackageManager.InstalledPackages.Strings[I]) - 1));
+            tmp := Copy(PackageManager.InstalledPackages.Strings[I], 1,
+              Pos(';', PackageManager.InstalledPackages.Strings[I]) - 1);
+              PackageMetaData := PackageManager.SearchPackage(tmp);
+              if Assigned(PackageMetaData) then
+                begin
+                  SetColorConsole(clGreen);
+                  Write(PackageMetadata.Name);
+                  SetColorConsole(clWhite);
+                  Write('[');
+                  SetColorConsole(clAqua);
+                  Write(PackageMetadata.Arch+'/'+PackageMetadata.OS);
+                  SetColorConsole(clWhite);
+                  Write(']('+PackageMetadata.VersionString+'):'+PackageMetadata.Description);
+                  WriteLn('');
+                  Dispose(PackageMetaData);
+                  PackageMetaData := nil;
+                end;
+            WriteLn('');
           end;
         end;
       6:
@@ -228,14 +260,30 @@ begin
           if ParamCount >= 2 then
           begin
             PackageMetaData := PackageManager.SearchPackage(ParamStr(2));
-            WriteLn('Nome:' + PackageMetaData.Name + #10 + #13 + 'Descrição:' +
-              PackageMetaData.Description + #13 + #10 + 'Arquitetura:' +
-              PackageMetaData.Arch + #10 + #13 + 'Ver:' +
-              PackageMetaData.VersionString);
-            Dispose(PackageMetaData);
+            if Assigned(PackageMetaData) then
+                begin
+                  WriteLn('--------------------------------------');
+                  SetColorConsole(clGreen);
+                  Write(PackageMetadata.Name);
+                  SetColorConsole(clWhite);
+                  Write('[');
+                  SetColorConsole(clAqua);
+                  Write(PackageMetadata.Arch+'/'+PackageMetadata.OS);
+                  SetColorConsole(clWhite);
+                  Write(']('+PackageMetadata.VersionString+'):'+PackageMetadata.Description);
+                  WriteLn('');
+                  WriteLn('Depende de:'+PackageMetaData.Dependencies);
+                  WriteLn('--------------------------------------');
+                  Dispose(PackageMetaData);
+                  PackageMetaData := nil;
+
+                end;
+            WriteLn('');
           end
           else
+            SetColorConsole(clYellow);
             WriteLn('Especifique o nome do pacote a ser pesquisado');
+            SetColorConsole(clWhite);
         end;
     end;
 
