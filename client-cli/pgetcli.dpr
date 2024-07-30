@@ -124,6 +124,7 @@ begin
       WriteLn('Exemplo: ' + ExtractFileName(ParamStr(0)) + ' install mgr');
       WriteLn('Operações: ' + #13 + #10 +
         'install: Instala o(s) pacote(s) especificado(s)' + #13 + #10 +
+        'forceinstall: Instala o(s) pacote(s) especificado(s)' + #13 + #10 +
         'update: Atualiza o indice de pacotes' + #13 + #10 +
         'search: Busca um pacote pelo nome' + #13 + #10 +
         'list: Lista todos os pacotes disponiveis' + #13 + #10 +
@@ -149,14 +150,14 @@ begin
       Exit;
     end;
     PackageList := TStringList.Create;
-    for I := 2 to ParamCount -1 do
+    for I := 2 to ParamCount do
       begin
         PackageList.Add(lowercase(ParamStr(I)));
         PackageListString := PackageListString + lowercase(ParamStr(I)) + ' '
       end;
 
     case IndexStr(lowercase(ParamStr(1)), ['install', 'update', 'upgrade',
-      'uninstall', 'list', 'installed', 'search']) of
+      'uninstall', 'list', 'installed', 'search','forceinstall']) of
       0:
         begin
           if PackageList.Count = 0 then
@@ -279,14 +280,33 @@ begin
 
                 end;
             WriteLn('');
-          end
-          else
-            SetColorConsole(clYellow);
-            WriteLn('Especifique o nome do pacote a ser pesquisado');
-            SetColorConsole(clWhite);
+          end;
+        end;
+      7:
+        begin
+          if PackageList.Count = 0 then
+          begin
+            WriteLn('Nenhum pacote especificado');
+            PackageList.Destroy;
+            Exit;
+          end;
+          SetColorConsole(clGreen);
+          WriteLn('Os seguintes pacotes serão INSTALADOS:' + PackageListString);
+          SetColorConsole(clWhite);
+          for I := 0 to PackageList.Count - 1 do
+          begin
+            WriteLn('Instalando pacote ' + PackageList.Strings[I]);
+            PackageManager.InstallForce(PackageList.Strings[I], CommandOutput);
+            WriteLn(CommandOutput);
+          end;
+        end
+      else
+        begin
+          SetColorConsole(clYellow);
+          WriteLn('Especifique o nome do pacote a ser pesquisado');
+          SetColorConsole(clWhite);
         end;
     end;
-
   except
     on E: Exception do
     begin

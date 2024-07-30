@@ -31,7 +31,7 @@ uses
   System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, System.ImageList,
   Vcl.ImgList, Vcl.ToolWin, Vcl.StdCtrls, Vcl.Buttons, Vcl.ExtCtrls, IOUtils,
-  UPackageManager;
+  UPackageManager, Vcl.Menus;
 
 type
   TfrmMain = class(TForm)
@@ -53,6 +53,9 @@ type
     Panel1: TPanel;
     btnAtualizaPkg: TBitBtn;
     lvwAtualizacoes: TListView;
+    popInstall: TPopupMenu;
+    InstalarPacote1: TMenuItem;
+    ForarReinstalao1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure btnAtualizaIdxClick(Sender: TObject);
     procedure CarregaAtualiza;
@@ -64,6 +67,9 @@ type
     procedure btnAtualizaPkgClick(Sender: TObject);
     procedure PageControl1Change(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure InstalarPacote1Click(Sender: TObject);
+    procedure ForarReinstalao1Click(Sender: TObject);
+    procedure lvwAtualizacoesDblClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -98,6 +104,29 @@ begin
   dlgWait.Close;
 end;
 
+procedure TfrmMain.ForarReinstalao1Click(Sender: TObject);
+var
+  PackageName,Output:String;
+begin
+  if lvwPacotes.ItemIndex = -1 then
+    begin
+      MessageBox(Self.Handle,'Selecione um pacote primeiro',PWideChar(Self.Caption),MB_OK+MB_ICONERROR+MB_APPLMODAL);
+      PageControl1.ActivePageIndex := 1;
+      lvwPacotes.SetFocus;
+      Exit;
+    end;
+  PackageName := lvwPacotes.ItemFocused.SubItems.Strings[0];
+  dlgInstall.memLog.Clear;
+  dlgInstall.Show;
+  dlgInstall.memLog.Lines.Add('Instalando pacote '+PackageName);
+  Application.ProcessMessages;
+  PackageManager.InstallForce(PackageName,Output);
+  dlgInstall.memLog.Lines.Add(Output);
+  dlgInstall.memLog.Lines.Add('Processo encerrado, você pode fechar esta janela.');
+  dlgInstall.SetFocus;
+  CarregaPacotes;
+end;
+
 procedure TfrmMain.FormCreate(Sender: TObject);
 begin
   PackageManager := TPackageManager.Create(
@@ -118,6 +147,55 @@ if PageControl1.ActivePageIndex = 1 then
     begin
       btnInstalarPacote.Enabled := False;
       btnDesinstalarPacote.Enabled := False;
+    end;
+end;
+
+procedure TfrmMain.InstalarPacote1Click(Sender: TObject);
+var
+  PackageName,Output:String;
+begin
+  if lvwPacotes.ItemIndex = -1 then
+    begin
+      MessageBox(Self.Handle,'Selecione um pacote primeiro',PWideChar(Self.Caption),MB_OK+MB_ICONERROR+MB_APPLMODAL);
+      PageControl1.ActivePageIndex := 1;
+      lvwPacotes.SetFocus;
+      Exit;
+    end;
+  PackageName := lvwPacotes.ItemFocused.SubItems.Strings[0];
+  dlgInstall.memLog.Clear;
+  dlgInstall.Show;
+  dlgInstall.memLog.Lines.Add('Instalando pacote '+PackageName);
+  Application.ProcessMessages;
+  PackageManager.Install(PackageName,Output);
+  dlgInstall.memLog.Lines.Add(Output);
+  dlgInstall.memLog.Lines.Add('Processo encerrado, você pode fechar esta janela.');
+  dlgInstall.SetFocus;
+  CarregaPacotes;
+end;
+
+procedure TfrmMain.lvwAtualizacoesDblClick(Sender: TObject);
+var
+PackageName,Output:String;
+begin
+  if lvwAtualizacoes.ItemIndex = -1 then
+    begin
+      MessageBox(Self.Handle,'Selecione um pacote primeiro',PWideChar(Self.Caption),MB_OK+MB_ICONERROR+MB_APPLMODAL);
+      PageControl1.ActivePageIndex := 1;
+      lvwAtualizacoes.SetFocus;
+      Exit;
+    end;
+  if MessageBox(Self.Handle,PWideChar('Você deseja atualizar o pacote '+lvwAtualizacoes.ItemFocused.Caption+'?'),PWideChar(Self.Caption),MB_OK+MB_ICONQUESTION+MB_APPLMODAL) = IDYES then
+    begin
+      PackageName := lvwAtualizacoes.ItemFocused.SubItems.Strings[0];
+      dlgInstall.memLog.Clear;
+      dlgInstall.Show;
+      dlgInstall.memLog.Lines.Add('Instalando pacote '+PackageName);
+      Application.ProcessMessages;
+      PackageManager.InstallForce(PackageName,Output);
+      dlgInstall.memLog.Lines.Add(Output);
+      dlgInstall.memLog.Lines.Add('Processo encerrado, você pode fechar esta janela.');
+      dlgInstall.SetFocus;
+      CarregaPacotes;
     end;
 end;
 
@@ -166,6 +244,7 @@ begin
       dlgInstall.Show;
       dlgInstall.memLog.Lines.Add('Atualizando pacotes');
       PackageManager.Upgrade(Output);
+      dlgInstall.memLog.Lines.Add(Output);
       dlgInstall.memLog.Lines.Add('Atualização encerrada, você pode fechar esta janela.');
       dlgInstall.memLog.Lines.Add('Processo encerrado, você pode fechar esta janela.');
       dlgInstall.SetFocus;

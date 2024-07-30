@@ -93,7 +93,6 @@ object frmMain: TfrmMain
     Style = tsFlatButtons
     TabOrder = 2
     OnChange = PageControl1Change
-    ExplicitTop = 43
     object TabSheet2: TTabSheet
       Caption = 'Atualiza'#231#245'es'
       ImageIndex = 1
@@ -143,6 +142,7 @@ object frmMain: TfrmMain
         RowSelect = True
         TabOrder = 1
         ViewStyle = vsReport
+        OnDblClick = lvwAtualizacoesDblClick
       end
     end
     object TabSheet1: TTabSheet
@@ -184,6 +184,7 @@ object frmMain: TfrmMain
         GridLines = True
         ReadOnly = True
         RowSelect = True
+        PopupMenu = popInstall
         TabOrder = 1
         ViewStyle = vsReport
         OnDblClick = lvwPacotesDblClick
@@ -196,7 +197,7 @@ object frmMain: TfrmMain
     Left = 424
     Top = 144
     Bitmap = {
-      494C010104000800340018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010104000800380018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -801,7 +802,7 @@ object frmMain: TfrmMain
     Left = 500
     Top = 156
     Bitmap = {
-      494C010101000800340010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010101000800380010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -939,5 +940,17 @@ object frmMain: TfrmMain
       000F000000000000000F000000000000801F000000000000801F000000000000
       C03F000000000000F0FF00000000000000000000000000000000000000000000
       000000000000}
+  end
+  object popInstall: TPopupMenu
+    Left = 324
+    Top = 148
+    object InstalarPacote1: TMenuItem
+      Caption = 'Instalar Pacote'
+      OnClick = InstalarPacote1Click
+    end
+    object ForarReinstalao1: TMenuItem
+      Caption = 'For'#231'ar Reinstala'#231#227'o'
+      OnClick = ForarReinstalao1Click
+    end
   end
 end
